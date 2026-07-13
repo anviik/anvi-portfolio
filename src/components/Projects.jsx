@@ -5,15 +5,23 @@ import TechIcon from './TechIcon'
 const ACCENTS = ['#c48b9f', '#8e6b9e', '#6bb5c9', '#a8d5a2', '#e8b87e', '#d4a0c4']
 
 export default function Projects({ data, onBack }) {
-  const trackRef = useRef(null)
-  const [open, setOpen] = useState(null) // index expanded via tap
+  const projects = data.projects
+  const [active, setActive] = useState(0)
+  const touchX = useRef(null)
 
-  const scrollByCard = (dir) => {
-    const track = trackRef.current
-    if (!track) return
-    const card = track.querySelector('.pcard')
-    const amount = card ? card.offsetWidth + 22 : 340
-    track.scrollBy({ left: dir * amount, behavior: 'smooth' })
+  const n = projects.length
+  const go = (dir) => setActive((a) => (a + dir + n) % n)
+
+  const onKey = (e) => {
+    if (e.key === 'ArrowLeft') go(-1)
+    else if (e.key === 'ArrowRight') go(1)
+  }
+  const onTouchStart = (e) => { touchX.current = e.touches[0].clientX }
+  const onTouchEnd = (e) => {
+    if (touchX.current == null) return
+    const dx = e.changedTouches[0].clientX - touchX.current
+    if (Math.abs(dx) > 44) go(dx < 0 ? 1 : -1)
+    touchX.current = null
   }
 
   return (
@@ -21,60 +29,75 @@ export default function Projects({ data, onBack }) {
       <div className="section-inner">
         <SectionHeader number="04" title="Projects" onBack={onBack} />
 
-        <div className="carousel">
-          <button className="carousel-btn" onClick={() => scrollByCard(-1)} aria-label="Previous projects">‹</button>
+        <div
+          className="coverflow"
+          tabIndex={0}
+          onKeyDown={onKey}
+          onTouchStart={onTouchStart}
+          onTouchEnd={onTouchEnd}
+        >
+          <button className="cf-arrow prev" onClick={() => go(-1)} aria-label="Previous project">‹</button>
 
-          <div className="carousel-track" ref={trackRef}>
-            {data.projects.map((p, i) => {
+          <div className="cf-stage">
+            {projects.map((p, i) => {
+              let offset = i - active
+              if (offset > n / 2) offset -= n
+              if (offset < -n / 2) offset += n
+              const abs = Math.abs(offset)
+              const isActive = offset === 0
               const external = p.link && p.link !== '#'
               const accent = ACCENTS[i % ACCENTS.length]
-              const isOpen = open === i
+              const label = external && /github\.com/.test(p.link) ? 'View code →' : 'Visit project →'
+
               return (
                 <article
                   key={i}
-                  className={`pcard${isOpen ? ' pcard--open' : ''}`}
-                  style={{ '--accent': accent }}
-                  onClick={() => setOpen(isOpen ? null : i)}
-                  onMouseLeave={() => setOpen((o) => (o === i ? null : o))}
+                  className={`cf-card${isActive ? ' active' : ''}`}
+                  aria-hidden={!isActive}
+                  onClick={() => !isActive && setActive(i)}
+                  style={{
+                    '--accent': accent,
+                    transform: `translateX(-50%) translateX(${offset * 56}%) scale(${
+                      isActive ? 1 : Math.max(0.62, 0.82 - (abs - 1) * 0.07)
+                    })`,
+                    opacity: abs > 2 ? 0 : isActive ? 1 : Math.max(0.18, 0.5 - (abs - 1) * 0.2),
+                    zIndex: 20 - abs,
+                    pointerEvents: abs > 2 ? 'none' : 'auto',
+                  }}
                 >
-                  <div className="pcard-media">
+                  <div className="cf-media">
                     {p.image ? (
                       <img src={p.image} alt={p.title} loading="lazy" />
                     ) : (
-                      <div className="pcard-media-fallback">{p.title}</div>
+                      <div className="cf-media-fallback">{p.title}</div>
                     )}
-                    <span className="pcard-tag">{p.tag}</span>
+                    <span className="cf-tag">{p.tag}</span>
                   </div>
 
-                  <div className="pcard-body">
-                    <h3 className="pcard-title">{p.title}</h3>
-                    <p className="pcard-short">{p.short}</p>
-                    <span className="pcard-more">{isOpen ? 'Tap to close' : 'Tap / hover for more'}</span>
-                  </div>
-
-                  <div className="pcard-detail">
-                    <h3 className="pcard-detail-title">{p.title}</h3>
-                    <p className="pcard-desc">{p.description}</p>
-                    <div className="pcard-stack">
+                  <div className="cf-body">
+                    <h3 className="cf-title">{p.title}</h3>
+                    <p className="cf-desc">{p.description}</p>
+                    <div className="cf-stack">
                       {p.tech.map((t) => (
-                        <span key={t} className="pcard-chip">
-                          <TechIcon name={t} size={15} />
+                        <span key={t} className="cf-chip">
+                          <TechIcon name={t} size={14} />
                           {t}
                         </span>
                       ))}
                     </div>
                     {external ? (
                       <a
-                        className="pcard-cta"
+                        className="cf-cta"
                         href={p.link}
                         target="_blank"
                         rel="noreferrer"
+                        tabIndex={isActive ? 0 : -1}
                         onClick={(e) => e.stopPropagation()}
                       >
-                        Visit project →
+                        {label}
                       </a>
                     ) : (
-                      <span className="pcard-cta pcard-cta--muted">Write-up coming soon</span>
+                      <span className="cf-cta muted">Write-up coming soon</span>
                     )}
                   </div>
                 </article>
@@ -82,10 +105,27 @@ export default function Projects({ data, onBack }) {
             })}
           </div>
 
-          <button className="carousel-btn" onClick={() => scrollByCard(1)} aria-label="Next projects">›</button>
+          <button className="cf-arrow next" onClick={() => go(1)} aria-label="Next project">›</button>
         </div>
 
-        <p className="carousel-hint">Tap or hover a card for details · swipe or use the arrows →</p>
+        <div className="cf-controls">
+          <span className="cf-counter">
+            {String(active + 1).padStart(2, '0')}
+            <span className="cf-sep"> / </span>
+            {String(n).padStart(2, '0')}
+          </span>
+          <div className="cf-dots">
+            {projects.map((p, i) => (
+              <button
+                key={i}
+                className={`cf-dot${active === i ? ' active' : ''}`}
+                onClick={() => setActive(i)}
+                aria-label={`Show ${p.title}`}
+                aria-current={active === i}
+              />
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   )

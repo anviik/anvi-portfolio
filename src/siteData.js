@@ -104,6 +104,15 @@ const siteData = {
   // ---- Work Experience (newest first; `current: true` = ongoing) ----------
   experience: [
     {
+      company: 'The Bank of New York (BNY)',
+      role: 'Software Engineering Intern',
+      date: 'Jun 2026 — Present',
+      current: true,
+      description:
+        'Building an AI agent to automate internal engineering workflows — designing the tool-calling and orchestration layer that lets the agent take reliable, multi-step actions.',
+      tech: ['Python', 'LLMs', 'AI Agents', 'Automation'],
+    },
+    {
       company: 'Bay Area Rapid Transit (BART)',
       role: 'AI Software Engineer — Capstone',
       date: 'Jan 2026 — Present',
@@ -122,12 +131,57 @@ const siteData = {
       tech: ['Python', 'VLMs', 'SAM3', 'CUDA', 'GPU'],
     },
     {
+      company: 'Inclusive Interaction Lab',
+      role: 'Undergraduate LLM Researcher',
+      date: 'Dec 2025 — Present',
+      current: true,
+      description:
+        'Designing LLM-powered systems for child–computer interaction and adaptive learning, applying prompt engineering and user research to improve engagement and response quality.',
+      tech: ['LLMs', 'HCI', 'Prompt Engineering', 'User Research'],
+    },
+    {
       company: 'Outamation (via Extern)',
       role: 'AI/ML Extern',
       date: 'Dec 2025 — Feb 2026',
       description:
         'Built document-intelligence pipelines combining OCR, NLP, LLMs, and RAG to turn unstructured financial PDFs into searchable data. Fine-tuned sentence-transformer embeddings with FAISS hybrid search for a chatbot that answers questions about multi-hundred-page documents.',
       tech: ['RAG', 'FAISS', 'NLP', 'LLMs', 'OCR'],
+    },
+    {
+      company: 'CodeDay — Excalidraw',
+      role: 'Open-Source Software Engineer Intern',
+      date: 'Nov 2025 — Present',
+      current: true,
+      description:
+        'Contributing production PRs to a large TypeScript/React codebase — debugging state and event issues and collaborating with maintainers to deliver clean, tested features.',
+      tech: ['TypeScript', 'React', 'Testing', 'Open Source'],
+    },
+    {
+      company: 'Data Science Society at UC Merced',
+      role: 'Lead Technical Director',
+      date: 'Nov 2025 — Present',
+      current: true,
+      description:
+        'Leading 6+ technical projects and mentoring engineers across AI, data, and full-stack domains, driving project execution, code quality, and cross-team collaboration.',
+      tech: ['Leadership', 'Mentorship', 'Machine Learning', 'Software Engineering'],
+    },
+    {
+      company: 'Google Developer Student Clubs',
+      role: 'Technical Lead',
+      date: 'Sep 2025 — Present',
+      current: true,
+      description:
+        'Leading a four-member team building a full-stack campus carpooling app — designing the backend, APIs, and CI/CD deployment on AWS.',
+      tech: ['React', 'FastAPI', 'PostgreSQL', 'AWS', 'CI/CD'],
+    },
+    {
+      company: 'Associated Students of UC Merced',
+      role: 'Senator, At-Large',
+      date: 'May 2025 — Present',
+      current: true,
+      description:
+        'Elected to represent 9,000+ students, managing a seven-figure budget to fund campus programs and shape policy for student advocacy and research initiatives.',
+      tech: ['Leadership', 'Policy', 'Budgeting', 'Communication'],
     },
     {
       company: 'National Science Foundation',
@@ -138,6 +192,15 @@ const siteData = {
       tech: ['Algorithms', 'Complexity', 'Research'],
     },
     {
+      company: '180 Degrees Consulting — UC Merced',
+      role: 'Founder & President',
+      date: 'Oct 2024 — Present',
+      current: true,
+      description:
+        "Founded and scaled UC Merced's first consulting club to 60+ members and 8 client projects, leading cross-functional teams to deliver product, tech, and strategy solutions.",
+      tech: ['Leadership', 'Product Strategy', 'Project Management', 'Agile'],
+    },
+    {
       company: 'University of California, Merced',
       role: 'Software Engineering Intern',
       date: 'Aug 2024 — May 2025',
@@ -145,11 +208,56 @@ const siteData = {
         'Optimized a reinforcement-learning irrigation model for almond orchards, cutting freshwater use by 20%. Built an API-driven pipeline ingesting CIMIS weather + IoT sensor data (80% less preprocessing) and a Flask dashboard visualizing CouchDB data with Pandas, NumPy, and Matplotlib.',
       tech: ['RL', 'Flask', 'Pandas', 'IoT', 'Raspberry Pi'],
     },
+    {
+      company: 'University of California, Merced',
+      role: 'Calculus Learning Assistant',
+      date: 'Aug 2024 — Present',
+      current: true,
+      description:
+        'Co-teaching Calculus I–II for 250+ students, leading office hours and review sessions to strengthen problem-solving and conceptual understanding.',
+      tech: ['Teaching', 'Tutoring', 'Mentorship'],
+    },
+    {
+      company: 'Brain Chain',
+      role: 'Software Engineering Intern',
+      date: 'May 2023 — Aug 2023',
+      description:
+        'Developed a 95%-accurate PDF text-extraction tool with a Tkinter GUI, streamlining analyst workflows and shipping it as an executable for 5,000+ page documents.',
+      tech: ['Python', 'Tkinter', 'PDF Processing'],
+    },
+    {
+      company: 'Siyanee Analytics Solutions LLP',
+      role: 'Product Design Intern',
+      date: 'May 2022 — Oct 2022',
+      description:
+        'Led a four-person design team for the Hindi Praveshikaa app — designing 40+ Figma screens and building adaptive-learning algorithms in C++/Python.',
+      tech: ['Figma', 'UX Design', 'C++', 'Python'],
+    },
   ],
 
-  // ---- Projects (shown in the hover carousel) -----------------------------
+  // ---- Projects (shown in the coverflow carousel) -------------------------
   // Update `link` to point anywhere you like ('#' = no external link).
   projects: [
+    {
+      tag: 'AI · Web',
+      title: 'Palette',
+      image: '/projects/palette.svg',
+      short: 'AI reads your coloring, then shops it.',
+      description:
+        'Snap a selfie and a vision model reads your skin undertone, hair, and eyes to build a personal color palette, then matches you to real makeup, clothing, and skincare you can buy. Qwen2.5-VL-72B handles the analysis, Pinecone vector search over all-MiniLM-L6-v2 embeddings finds matches, and Google Shopping data (via SerpApi) surfaces shoppable products — all on Next.js serverless.',
+      tech: ['Next.js', 'VLMs', 'Pinecone', 'Vercel'],
+      link: 'https://palette-henna.vercel.app',
+    },
+    {
+      tag: 'AI · Mobile',
+      title: 'MirrorVerse',
+      image: '/projects/mirrorverse.svg',
+      short: 'A flight-simulator for life decisions.',
+      description:
+        'Structure any life choice as a knowledge graph and let 7 adversarial AI agents debate it across rounds, returning the risks, contradictions, and missing information — personalized by memory of how you actually decide. A LangGraph debate engine over Claude powers the agents, with a FastAPI backend, React Native / Expo app, and a Neo4j Aura + Mem0 + Zep memory layer deployed on GCP Cloud Run.',
+      tech: ['Claude', 'LangGraph', 'FastAPI', 'React Native', 'Neo4j'],
+      link: 'https://github.com/anviik/mirrorverse',
+    },
     {
       tag: 'Open Source',
       title: 'Excalidraw',

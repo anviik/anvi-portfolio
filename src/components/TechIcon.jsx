@@ -3,6 +3,7 @@ import {
   SiPytorch, SiScikitlearn, SiLangchain, SiHuggingface, SiFastapi, SiReact,
   SiFlask, SiNodedotjs, SiDocker, SiPostgresql, SiGit, SiGithubactions,
   SiLinux, SiNvidia, SiPandas, SiRaspberrypi, SiExcalidraw, SiOpenjdk,
+  SiFigma, SiNextdotjs, SiVercel, SiGooglecloud,
 } from 'react-icons/si'
 import {
   FaJava, FaAws, FaDatabase, FaBrain, FaFlask, FaBullseye, FaScissors,
@@ -40,6 +41,10 @@ const MAP = {
   'ocr': [FaCode, '#8e6b9e'],
   'cuda': [SiNvidia, '#76B900'],
   'rl': [FaBrain, '#e8b87e'],
+  'ai agents': [FaBrain, '#c48b9f'],
+  'prompt engineering': [FaBrain, '#a8d5a2'],
+  'hci': [FaBrain, '#e8b87e'],
+  'automation': [FaDiagramProject, '#6bb5c9'],
 
   // Frameworks & tools
   'fastapi': [SiFastapi, '#009688'],
@@ -59,6 +64,13 @@ const MAP = {
 
   // Project-specific
   'canvas': [SiExcalidraw, '#6965DB'],
+  'figma': [SiFigma, '#F24E1E'],
+  'next.js': [SiNextdotjs, '#ffffff'],
+  'vercel': [SiVercel, '#ffffff'],
+  'neo4j': [FaDatabase, '#4581C3'],
+  'gcp': [SiGooglecloud, '#4285F4'],
+  'pinecone': [FaDatabase, '#5b8def'],
+  'claude': [FaBrain, '#d97757'],
   'algorithms': [FaCode, '#8e6b9e'],
   'complexity': [FaCode, '#8e6b9e'],
   'research': [FaFlask, '#c48b9f'],
