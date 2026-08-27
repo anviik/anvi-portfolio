@@ -14,7 +14,7 @@ export default function About({ data, onBack }) {
         <div className="about2">
           {/* Editorial lead column */}
           <div className="about2-lead">
-            <p className="about2-kicker">{about.greeting} {name.split(' ')[0]} — nice to meet you.</p>
+            <p className="about2-kicker">{about.greeting} {name.split(' ')[0]}. Nice to meet you.</p>
             <p className="about2-body about2-first">
               <span className="dropcap">{dropCap}</span>{firstRest}
             </p>

@@ -95,7 +95,7 @@ export default function Hero({ data, onNavigate }) {
 
       {/* Center identity */}
       <div className="hero-identity">
-        <p className="hero-eyebrow">Hi, I'm — welcome, glad you're here</p>
+        <p className="hero-eyebrow">Welcome, glad you're here</p>
         <h1 className="hero-name">{data.name}</h1>
         <p className="hero-role">{data.role}</p>
         <p className="hero-subtitle">{data.subtitle}</p>

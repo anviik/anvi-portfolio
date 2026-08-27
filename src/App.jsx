@@ -8,6 +8,7 @@ import About from './components/About'
 import Skills from './components/Skills'
 import Experience from './components/Experience'
 import Projects from './components/Projects'
+import Blogs from './components/Blogs'
 import Accomplishments from './components/Accomplishments'
 import Contact from './components/Contact'
 
@@ -16,6 +17,7 @@ const SECTION_COMPONENTS = {
   skills: Skills,
   experience: Experience,
   projects: Projects,
+  blogs: Blogs,
   accomplishments: Accomplishments,
   contact: Contact,
 }

@@ -39,7 +39,7 @@ export default function Contact({ data, onBack }) {
   return (
     <section className="section" id="contact">
       <div className="section-inner">
-        <SectionHeader number="06" title="Contact" onBack={onBack} />
+        <SectionHeader number="07" title="Contact" onBack={onBack} />
         <div className="contact-wrap">
           <p className="contact-message">{contact.message}</p>
           <div className="contact-links">

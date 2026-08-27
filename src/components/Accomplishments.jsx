@@ -5,7 +5,7 @@ export default function Accomplishments({ data, onBack }) {
   return (
     <section className="section" id="accomplishments">
       <div className="section-inner">
-        <SectionHeader number="05" title="Accomplishments" onBack={onBack} />
+        <SectionHeader number="06" title="Accomplishments" onBack={onBack} />
 
         {hero && (
           <div className="trophy-hero card" style={{ animationDelay: '0.1s' }}>

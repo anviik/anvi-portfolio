@@ -9,3 +9,6 @@ yarn-debug.log*
 yarn-error.log*
 .env
 .env.*
+
+# Source screenshots. The served copies live in public/images/blogs/.
+/images/
