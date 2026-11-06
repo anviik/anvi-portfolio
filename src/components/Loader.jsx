@@ -1,16 +1,17 @@
-export default function Loader({ dark }) {
+/** Opening curtain: the name rises in, a rule draws across, then the panel lifts off the page. */
+export default function Loader({ name, lifting }) {
   return (
-    <div className={`loader${dark ? ' dark' : ''}`}>
-      <div className="loader-constellation">
-        <svg viewBox="0 0 120 60" width="120" height="60" aria-hidden="true">
-          <line x1="20" y1="40" x2="60" y2="18" className="loader-line" />
-          <line x1="60" y1="18" x2="100" y2="42" className="loader-line" />
-          <circle cx="20" cy="40" r="5" className="loader-dot" style={{ animationDelay: '0s' }} />
-          <circle cx="60" cy="18" r="5" className="loader-dot" style={{ animationDelay: '0.25s' }} />
-          <circle cx="100" cy="42" r="5" className="loader-dot" style={{ animationDelay: '0.5s' }} />
-        </svg>
+    <div className={`loader${lifting ? ' lifting' : ''}`} aria-hidden="true">
+      <div className="loader-inner">
+        <p className="loader-name">
+          {name.split('').map((ch, i) => (
+            <span key={i} className="loader-ch">
+              <span style={{ animationDelay: `${0.1 + i * 0.03}s` }}>{ch === ' ' ? ' ' : ch}</span>
+            </span>
+          ))}
+        </p>
+        <span className="loader-rule" />
       </div>
-      <p className="loader-text">Loading...</p>
     </div>
   )
 }

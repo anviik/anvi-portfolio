@@ -1,59 +1,34 @@
-import { useState } from 'react'
 import SectionHeader from './SectionHeader'
 import TechIcon from './TechIcon'
+import { Reveal } from '../lib/motion'
 
-export default function Skills({ data, onBack }) {
-  const groups = data.skillGroups
-  const [active, setActive] = useState(0)
-
+export default function Skills({ data }) {
   return (
-    <section className="section" id="skills">
-      <div className="section-inner">
-        <SectionHeader number="02" title="Skills" onBack={onBack} />
+    <section className="section container" id="skills">
+      <SectionHeader
+        number="04"
+        title="Toolkit"
+        tone="teal"
+        blurb="The languages, models, and platforms I reach for most."
+      />
 
-        <div className="skx">
-          {/* Left: editorial category index */}
-          <div className="skx-menu" role="tablist" aria-label="Skill categories">
-            {groups.map((g, i) => (
-              <button
-                key={g.category}
-                role="tab"
-                aria-selected={active === i}
-                className={`skx-item${active === i ? ' active' : ''}`}
-                onMouseEnter={() => setActive(i)}
-                onFocus={() => setActive(i)}
-                onClick={() => setActive(i)}
-              >
-                <span className="skx-num">{String(i + 1).padStart(2, '0')}</span>
-                <span className="skx-label">{g.category}</span>
-                <span className="skx-count">{g.items.length}</span>
-              </button>
-            ))}
+      <div className="sk-groups">
+        {data.skillGroups.map((g, i) => (
+          <div key={g.category} className="sk-group">
+            <Reveal className="sk-cat">
+              <span className="eyebrow tone-teal">{String(i + 1).padStart(2, '0')}</span>
+              <h3>{g.category}</h3>
+            </Reveal>
+            <ul className="sk-grid">
+              {g.items.map((s, j) => (
+                <Reveal as="li" key={s.name} className="sk-tile" delay={j * 0.025}>
+                  <span className="sk-icon"><TechIcon name={s.name} size={17} /></span>
+                  <span className="sk-name">{s.name}</span>
+                </Reveal>
+              ))}
+            </ul>
           </div>
-
-          {/* Right: animated skill cloud for the active category */}
-          <div className="skx-panel">
-            {groups.map((g, i) => (
-              <div
-                key={g.category}
-                role="tabpanel"
-                aria-hidden={active !== i}
-                className={`skx-cloud${active === i ? ' active' : ''}`}
-              >
-                {g.items.map((s, j) => (
-                  <span
-                    key={s.name}
-                    className="skx-chip"
-                    style={{ transitionDelay: `${0.04 + j * 0.035}s` }}
-                  >
-                    <span className="skx-chip-icon"><TechIcon name={s.name} size={20} /></span>
-                    {s.name}
-                  </span>
-                ))}
-              </div>
-            ))}
-          </div>
-        </div>
+        ))}
       </div>
     </section>
   )

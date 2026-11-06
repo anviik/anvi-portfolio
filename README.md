@@ -1,7 +1,7 @@
 # Anvi Kudaraya — Portfolio
 
-A single-page React + Vite personal portfolio with a pastel "constellation" landing page,
-glassmorphism UI, dark mode, and a hover/tap project carousel. Pure CSS, no UI framework.
+A single-page React + Vite personal portfolio with an editorial, single-scroll layout,
+scroll-driven animations, brand logos, and dark mode. Pure CSS, no UI framework or animation library.
 
 ## Develop
 
@@ -20,8 +20,11 @@ npm run preview  # preview the production build
 ## Editing content
 
 All personal content lives in [`src/siteData.js`](src/siteData.js) — bio, skills,
-experience, projects, accomplishments, and contact links. Project thumbnails live in
-[`public/projects/`](public/projects) (swap the placeholder SVGs for real screenshots).
+experience, projects, blog posts, and contact links.
+
+- **Project art:** add `image: '/projects/shot.png'` to a project to replace its monogram panel.
+- **Organization logos:** on an experience entry, set `logo` to a file in [`public/logos/`](public/logos).
+  Entries with only `mono` show typeset letters until a real logo is added.
 
 ## Deploy
 

@@ -1,52 +1,41 @@
 import SectionHeader from './SectionHeader'
+import { Reveal } from '../lib/motion'
 
-export default function About({ data, onBack }) {
-  const { about, name } = data
-  const [firstPara, ...restParas] = about.bio
-  const dropCap = firstPara.charAt(0)
-  const firstRest = firstPara.slice(1)
+export default function About({ data }) {
+  const { about, firstName } = data
 
   return (
-    <section className="section" id="about">
-      <div className="section-inner">
-        <SectionHeader number="01" title="About Me" onBack={onBack} />
+    <section className="section container" id="about">
+      <SectionHeader number="02" title="About" tone="magenta" />
 
-        <div className="about2">
-          {/* Editorial lead column */}
-          <div className="about2-lead">
-            <p className="about2-kicker">{about.greeting} {name.split(' ')[0]}. Nice to meet you.</p>
-            <p className="about2-body about2-first">
-              <span className="dropcap">{dropCap}</span>{firstRest}
-            </p>
-            {restParas.map((p, i) => (
-              <p key={i} className="about2-body">{p}</p>
-            ))}
-            <p className="about2-signature">{name}</p>
-          </div>
-
-          {/* Index-card fact sheet */}
-          <aside className="about2-card card">
-            <span className="about2-card-label">Fact Sheet</span>
-            <dl className="factsheet">
-              {about.facts.map((f, i) => (
-                <div key={i} className="fact">
-                  <dt>{f.label}</dt>
-                  <span className="fact-leader" />
-                  <dd>{f.value}</dd>
-                </div>
-              ))}
-            </dl>
-
-            <div className="about2-now">
-              <span className="about2-now-label">◆ Currently</span>
-              <ul>
-                {about.now.map((n, i) => (
-                  <li key={i}>{n}</li>
-                ))}
-              </ul>
-            </div>
-          </aside>
+      <div className="about">
+        <div className="about-lead">
+          <Reveal as="p" className="about-kicker">
+            {about.greeting} <em>{firstName}.</em> Nice to meet you.
+          </Reveal>
+          {about.bio.map((p, i) => (
+            <Reveal as="p" key={i} className="about-body" delay={0.08 + i * 0.08}>{p}</Reveal>
+          ))}
         </div>
+
+        <aside className="about-side">
+          <Reveal as="p" className="eyebrow tone-muted">Fact sheet</Reveal>
+          <dl className="facts">
+            {about.facts.map((f, i) => (
+              <Reveal key={f.label} className="fact" delay={i * 0.05}>
+                <dt className="meta-key tone-muted">{f.label}</dt>
+                <dd>{f.value}</dd>
+              </Reveal>
+            ))}
+          </dl>
+
+          <Reveal as="p" className="eyebrow tone-magenta about-now-label">Currently</Reveal>
+          <ul className="about-now">
+            {about.now.map((n, i) => (
+              <Reveal as="li" key={n} delay={i * 0.06}>{n}</Reveal>
+            ))}
+          </ul>
+        </aside>
       </div>
     </section>
   )

@@ -1,132 +1,227 @@
 import { useRef, useState } from 'react'
 import SectionHeader from './SectionHeader'
 import TechIcon from './TechIcon'
+import { Reveal } from '../lib/motion'
 
-const ACCENTS = ['#c48b9f', '#8e6b9e', '#6bb5c9', '#a8d5a2', '#e8b87e', '#d4a0c4']
+const TONES = ['magenta', 'blue', 'violet', 'teal', 'rust', 'olive', 'green']
+const SWIPE_DISTANCE = 50
 
-export default function Projects({ data, onBack }) {
+function ProjectCard({ project, tone, offset, onSelect, expanded, onToggleMore }) {
+  const isActive = offset === 0
+  const distance = Math.abs(offset)
+  const external = project.link && project.link !== '#'
+  const cta = external && /github\.com/.test(project.link) ? 'View code' : 'Visit project'
+  const tabIndex = isActive ? 0 : -1
+
+  const art = project.image ? (
+    <img className="pj-shot" src={project.image} alt={project.title} loading="lazy" draggable={false} />
+  ) : (
+    <>
+      <div className="pj-art"><span>{project.title.charAt(0)}</span></div>
+      {project.tech.slice(0, 4).map((t, i) => (
+        <span key={t} className={`pj-float pj-float-${i}`}><TechIcon name={t} size={18} /></span>
+      ))}
+    </>
+  )
+
+  return (
+    <article
+      className={`cf-card tone-${tone}${isActive ? ' active' : ''}`}
+      aria-hidden={!isActive}
+      data-cursor={isActive ? undefined : offset < 0 ? 'Prev' : 'Next'}
+      onClickCapture={(e) => {
+        // A side card only comes to the front; its links work once it's there.
+        if (isActive) return
+        e.preventDefault()
+        e.stopPropagation()
+        onSelect()
+      }}
+      style={{
+        transform: `translateX(calc(${offset} * (100% + var(--cf-gap)) + var(--drag, 0px))) scale(${isActive ? 1 : 0.92})`,
+        opacity: isActive ? 1 : distance === 1 ? 0.4 : distance === 2 ? 0.15 : 0,
+        pointerEvents: distance > 2 ? 'none' : undefined,
+      }}
+    >
+      {external ? (
+        <a
+          className="cf-media"
+          href={project.link}
+          target="_blank"
+          rel="noreferrer"
+          tabIndex={tabIndex}
+          data-cursor={isActive ? 'Visit' : undefined}
+          aria-label={`Open ${project.title}`}
+        >
+          {art}
+        </a>
+      ) : (
+        <div className="cf-media">{art}</div>
+      )}
+
+      <div className="cf-body">
+        <p className="eyebrow pj-tag">{project.tag}</p>
+        <h3 className="cf-title">{project.title}</h3>
+        <p className={`cf-desc${expanded ? ' expanded' : ''}`}>{project.description}</p>
+        {/* Phones clamp the description so every card stays a sensible height. */}
+        {isActive && (
+          <button className="cf-more" onClick={onToggleMore} aria-expanded={expanded}>
+            {expanded ? 'Show less' : 'Read more'}
+          </button>
+        )}
+        <p className="meta-line cf-meta">
+          <span className="meta-key pj-tag">Built with</span>
+          {project.tech.map((t) => (
+            <span key={t} className="meta-tech"><TechIcon name={t} size={13} />{t}</span>
+          ))}
+        </p>
+        {external ? (
+          <a className="pj-cta" href={project.link} target="_blank" rel="noreferrer" tabIndex={tabIndex}>
+            <span>{cta}</span><span className="pj-cta-arrow" aria-hidden="true">↗</span>
+          </a>
+        ) : (
+          <span className="eyebrow tone-muted">Write-up coming soon</span>
+        )}
+      </div>
+    </article>
+  )
+}
+
+export default function Projects({ data }) {
   const projects = data.projects
-  const [active, setActive] = useState(0)
-  const touchX = useRef(null)
-
   const n = projects.length
-  const go = (dir) => setActive((a) => (a + dir + n) % n)
+  const [active, setActiveIndex] = useState(0)
+  const [expanded, setExpanded] = useState(false)
+  const stageRef = useRef(null)
+  const drag = useRef(null)
+  const swallowClick = useRef(false)
 
-  const onKey = (e) => {
+  const setActive = (i) => {
+    setActiveIndex(i)
+    setExpanded(false)
+  }
+  const go = (dir) => setActive((active + dir + n) % n)
+
+  const onKeyDown = (e) => {
     if (e.key === 'ArrowLeft') go(-1)
     else if (e.key === 'ArrowRight') go(1)
   }
-  const onTouchStart = (e) => { touchX.current = e.touches[0].clientX }
-  const onTouchEnd = (e) => {
-    if (touchX.current == null) return
-    const dx = e.changedTouches[0].clientX - touchX.current
-    if (Math.abs(dx) > 44) go(dx < 0 ? 1 : -1)
-    touchX.current = null
+
+  // Drag with a mouse or swipe with a finger. Vertical swipes still scroll the
+  // page (touch-action: pan-y), and a drag never counts as a click on a link.
+  const onPointerDown = (e) => {
+    if (e.pointerType === 'mouse' && e.button !== 0) return
+    swallowClick.current = false
+    drag.current = { x: e.clientX, dx: 0, moved: false }
+  }
+
+  const onPointerMove = (e) => {
+    const d = drag.current
+    if (!d) return
+    d.dx = e.clientX - d.x
+    if (!d.moved && Math.abs(d.dx) > 8) {
+      d.moved = true
+      stageRef.current.setPointerCapture(e.pointerId)
+      stageRef.current.classList.add('dragging')
+    }
+    if (d.moved) stageRef.current.style.setProperty('--drag', `${d.dx}px`)
+  }
+
+  const endDrag = () => {
+    const d = drag.current
+    drag.current = null
+    if (!d?.moved) return
+    swallowClick.current = true
+    stageRef.current.classList.remove('dragging')
+    stageRef.current.style.removeProperty('--drag')
+    if (d.dx <= -SWIPE_DISTANCE) go(1)
+    else if (d.dx >= SWIPE_DISTANCE) go(-1)
   }
 
   return (
-    <section className="section" id="projects">
-      <div className="section-inner">
-        <SectionHeader number="04" title="Projects" onBack={onBack} />
-
-        <div
-          className="coverflow"
-          tabIndex={0}
-          onKeyDown={onKey}
-          onTouchStart={onTouchStart}
-          onTouchEnd={onTouchEnd}
-        >
-          <button className="cf-arrow prev" onClick={() => go(-1)} aria-label="Previous project">‹</button>
-
-          <div className="cf-stage">
-            {projects.map((p, i) => {
-              let offset = i - active
-              if (offset > n / 2) offset -= n
-              if (offset < -n / 2) offset += n
-              const abs = Math.abs(offset)
-              const isActive = offset === 0
-              const external = p.link && p.link !== '#'
-              const accent = ACCENTS[i % ACCENTS.length]
-              const label = external && /github\.com/.test(p.link) ? 'View code →' : 'Visit project →'
-
-              return (
-                <article
-                  key={i}
-                  className={`cf-card${isActive ? ' active' : ''}`}
-                  aria-hidden={!isActive}
-                  onClick={() => !isActive && setActive(i)}
-                  style={{
-                    '--accent': accent,
-                    transform: `translateX(-50%) translateX(${offset * 56}%) scale(${
-                      isActive ? 1 : Math.max(0.62, 0.82 - (abs - 1) * 0.07)
-                    })`,
-                    opacity: abs > 2 ? 0 : isActive ? 1 : Math.max(0.18, 0.5 - (abs - 1) * 0.2),
-                    zIndex: 20 - abs,
-                    pointerEvents: abs > 2 ? 'none' : 'auto',
-                  }}
-                >
-                  <div className="cf-media">
-                    {p.image ? (
-                      <img src={p.image} alt={p.title} loading="lazy" />
-                    ) : (
-                      <div className="cf-media-fallback">{p.title}</div>
-                    )}
-                    <span className="cf-tag">{p.tag}</span>
-                  </div>
-
-                  <div className="cf-body">
-                    <h3 className="cf-title">{p.title}</h3>
-                    <p className="cf-desc">{p.description}</p>
-                    <div className="cf-stack">
-                      {p.tech.map((t) => (
-                        <span key={t} className="cf-chip">
-                          <TechIcon name={t} size={14} />
-                          {t}
-                        </span>
-                      ))}
-                    </div>
-                    {external ? (
-                      <a
-                        className="cf-cta"
-                        href={p.link}
-                        target="_blank"
-                        rel="noreferrer"
-                        tabIndex={isActive ? 0 : -1}
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        {label}
-                      </a>
-                    ) : (
-                      <span className="cf-cta muted">Write-up coming soon</span>
-                    )}
-                  </div>
-                </article>
-              )
-            })}
-          </div>
-
-          <button className="cf-arrow next" onClick={() => go(1)} aria-label="Next project">›</button>
-        </div>
-
-        <div className="cf-controls">
-          <span className="cf-counter">
-            {String(active + 1).padStart(2, '0')}
-            <span className="cf-sep"> / </span>
-            {String(n).padStart(2, '0')}
-          </span>
-          <div className="cf-dots">
-            {projects.map((p, i) => (
-              <button
-                key={i}
-                className={`cf-dot${active === i ? ' active' : ''}`}
-                onClick={() => setActive(i)}
-                aria-label={`Show ${p.title}`}
-                aria-current={active === i}
-              />
-            ))}
-          </div>
-        </div>
+    <section className="section work" id="projects">
+      <div className="container">
+        <SectionHeader
+          number="01"
+          title="Selected work"
+          blurb="Products, research, and open source: what I've been building lately."
+        />
       </div>
+
+      <Reveal
+        className="cf"
+        role="group"
+        aria-roledescription="carousel"
+        aria-label="Projects"
+        tabIndex={0}
+        onKeyDown={onKeyDown}
+      >
+        <div
+          className="cf-stage"
+          ref={stageRef}
+          onPointerDown={onPointerDown}
+          onPointerMove={onPointerMove}
+          onPointerUp={endDrag}
+          onPointerCancel={endDrag}
+          onDragStart={(e) => e.preventDefault()}
+          onClickCapture={(e) => {
+            if (!swallowClick.current) return
+            swallowClick.current = false
+            e.preventDefault()
+            e.stopPropagation()
+          }}
+        >
+          {projects.map((p, i) => {
+            // Shortest way round the loop, so the last card sits left of the first.
+            let offset = i - active
+            if (offset > n / 2) offset -= n
+            if (offset < -n / 2) offset += n
+            return (
+              <ProjectCard
+                key={p.title}
+                project={p}
+                tone={TONES[i % TONES.length]}
+                offset={offset}
+                onSelect={() => setActive(i)}
+                expanded={expanded}
+                onToggleMore={() => setExpanded((e) => !e)}
+              />
+            )
+          })}
+        </div>
+
+        <div className="container cf-controls">
+          <p className="cf-counter" aria-live="polite">
+            <span className="cf-counter-now">{String(active + 1).padStart(2, '0')}</span>
+            <span className="eyebrow tone-muted"> / {String(n).padStart(2, '0')}</span>
+            <span className="sr-only">: {projects[active].title}</span>
+          </p>
+
+          <ul className="cf-names">
+            {projects.map((p, i) => (
+              <li key={p.title}>
+                <button
+                  className={`cf-name${i === active ? ' active' : ''}`}
+                  onClick={() => setActive(i)}
+                  aria-current={i === active}
+                >
+                  {p.title}
+                </button>
+              </li>
+            ))}
+          </ul>
+
+          <ul className="cf-dots" aria-hidden="true">
+            {projects.map((p, i) => (
+              <li key={p.title} className={i === active ? 'active' : ''} />
+            ))}
+          </ul>
+
+          <div className="cf-arrows">
+            <button className="cf-arrow" onClick={() => go(-1)} aria-label="Previous project">←</button>
+            <button className="cf-arrow" onClick={() => go(1)} aria-label="Next project">→</button>
+          </div>
+        </div>
+      </Reveal>
     </section>
   )
 }

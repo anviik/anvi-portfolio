@@ -1,89 +1,92 @@
-import { useState, useEffect } from 'react'
-
-function SunIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="12" cy="12" r="4" />
-      <path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
-    </svg>
-  )
-}
-
-function MoonIcon() {
-  return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
-    </svg>
-  )
-}
+import { useEffect, useRef, useState } from 'react'
+import { FaMoon, FaSun } from 'react-icons/fa6'
+import { useScrollFrame } from '../lib/motion'
 
 export default function Navbar({ data, activeView, onNavigate, onHome, dark, onToggleTheme }) {
   const [open, setOpen] = useState(false)
+  const [hidden, setHidden] = useState(false)
+  const lastY = useRef(0)
 
-  // Lock scroll while the mobile drawer is open
+  // Tuck away when scrolling down, come back on any scroll up.
+  useScrollFrame(() => {
+    const y = window.scrollY
+    if (Math.abs(y - lastY.current) < 6) return
+    setHidden(y > lastY.current && y > 160)
+    lastY.current = y
+  })
+
+  // Lock scroll while the mobile menu is open
   useEffect(() => {
-    document.body.style.overflow = open ? 'hidden' : ''
-    return () => { document.body.style.overflow = '' }
+    document.documentElement.style.overflow = open ? 'hidden' : ''
+    return () => { document.documentElement.style.overflow = '' }
   }, [open])
 
   const handleNav = (id) => {
-    onNavigate(id)
     setOpen(false)
+    onNavigate(id)
   }
 
   return (
-    <nav className="nav">
-      <div className="nav-inner">
-        <button className="nav-logo" onClick={() => { onHome(); setOpen(false) }}>
-          <span className="nav-logo-chevron">‹</span>
-          {data.name}
-        </button>
-
-        <div className="nav-right">
-          <ul className="nav-links">
-            {data.nav.map((item) => (
-              <li key={item.id}>
-                <button
-                  className={`nav-link${activeView === item.id ? ' active' : ''}`}
-                  onClick={() => handleNav(item.id)}
-                >
-                  {item.label}
-                </button>
-              </li>
-            ))}
-          </ul>
-
-          <button className="theme-toggle" onClick={onToggleTheme} aria-label="Toggle dark mode">
-            {dark ? <SunIcon /> : <MoonIcon />}
+    <>
+      <nav className={`nav${hidden && !open ? ' tucked' : ''}`} onFocus={() => setHidden(false)}>
+        <div className="nav-inner container">
+          <button className="nav-logo" onClick={() => { setOpen(false); onHome() }} aria-label={`${data.name}, back to top`}>
+            <span className="nav-mark" aria-hidden="true">
+              {data.name.split(' ').map((w) => w[0]).join('')}
+            </span>
+            <span className="nav-logo-name" aria-hidden="true">{data.name}</span>
           </button>
 
-          <button
-            className={`nav-burger${open ? ' open' : ''}`}
-            onClick={() => setOpen((o) => !o)}
-            aria-label="Toggle menu"
-            aria-expanded={open}
-          >
-            <span /><span /><span />
-          </button>
+          <div className="nav-right">
+            <ul className="nav-links">
+              {data.nav.map((item) => (
+                <li key={item.id}>
+                  <button
+                    className={`nav-link${activeView === item.id ? ' active' : ''}`}
+                    onClick={() => handleNav(item.id)}
+                  >
+                    {item.label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+
+            <button className="theme-toggle" onClick={onToggleTheme} aria-label="Toggle dark mode">
+              <span key={dark ? 'sun' : 'moon'} className="theme-icon">
+                {dark ? <FaSun size={14} /> : <FaMoon size={13} />}
+              </span>
+            </button>
+
+            <button
+              className={`nav-burger${open ? ' open' : ''}`}
+              onClick={() => setOpen((o) => !o)}
+              aria-label="Toggle menu"
+              aria-expanded={open}
+            >
+              <span /><span />
+            </button>
+          </div>
         </div>
-      </div>
+      </nav>
 
-      {/* Mobile drawer */}
-      <div className={`nav-drawer${open ? ' open' : ''}`}>
+      {/* Sits outside <nav>: the nav's transform would otherwise trap this fixed panel. */}
+      <div className={`nav-drawer${open ? ' open' : ''}`} aria-hidden={!open}>
         <ul>
-          {data.nav.map((item) => (
+          {data.nav.map((item, i) => (
             <li key={item.id}>
               <button
                 className={`drawer-link${activeView === item.id ? ' active' : ''}`}
+                style={{ transitionDelay: open ? `${0.12 + i * 0.05}s` : '0s' }}
+                tabIndex={open ? 0 : -1}
                 onClick={() => handleNav(item.id)}
               >
+                <span className="drawer-num">{String(i + 1).padStart(2, '0')}</span>
                 {item.label}
               </button>
             </li>
           ))}
         </ul>
       </div>
-      {open && <div className="nav-scrim" onClick={() => setOpen(false)} />}
-    </nav>
+    </>
   )
 }

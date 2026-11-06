@@ -7,98 +7,100 @@ const siteData = {
   // ---- Identity -----------------------------------------------------------
   name: 'Anvi Kudaraya',
   firstName: 'Anvi',
-  role: 'AI/ML Engineer · CS + Cognitive Science @ UC Merced',
-  subtitle: 'I build AI systems that actually ship, from mobile apps to 3D perception pipelines.',
+  subtitle: 'Computer science and engineering student interested in SWE and AI.',
+  // Small print along the bottom of the hero
+  heroMeta: ['University of California, Merced', 'SF Bay Area, CA'],
   location: 'San Francisco Bay Area, CA',
 
   // ---- Navigation ---------------------------------------------------------
   nav: [
+    { id: 'projects', label: 'Work' },
     { id: 'about', label: 'About' },
-    { id: 'skills', label: 'Skills' },
     { id: 'experience', label: 'Experience' },
-    { id: 'projects', label: 'Projects' },
+    { id: 'skills', label: 'Skills' },
     { id: 'blogs', label: 'Blog' },
-    { id: 'accomplishments', label: 'Accomplishments' },
     { id: 'contact', label: 'Contact' },
-  ],
-
-  // ---- Constellation star positions (%). Order matches `nav`.
-  // Kept toward the edges so they never sit under the center name block.
-  constellation: [
-    { x: 13, y: 20 },   // about
-    { x: 8, y: 52 },    // skills  (moved to the outer-left edge)
-    { x: 20, y: 83 },   // experience
-    { x: 81, y: 16 },   // projects
-    { x: 92, y: 42 },   // blogs
-    { x: 86, y: 68 },   // accomplishments
-    { x: 68, y: 87 },   // contact
   ],
 
   // ---- About --------------------------------------------------------------
   about: {
     greeting: "Hi, I'm",
     bio: [
-      "I'm a Computer Science & Cognitive Science student at UC Merced who likes building AI systems that actually ship. Lately that's meant a maintenance-reporting app for BART's daily riders, a two-stage 3D perception pipeline for robotic apple harvesting, and RAG systems that make hundred-page financial PDFs answerable in plain English.",
-      "Away from the terminal I founded my school's first consulting club, got elected to student government to represent 10,000+ students, and spend an unreasonable amount of time reviewing open-source PRs. I care most about the small details that make a system feel obvious to use.",
+      "I'm a computer science and engineering student at UC Merced, interested in full-stack development, backend systems, AI, and algorithms.",
     ],
     // Editorial "fact sheet": label / value pairs
     facts: [
       { label: 'Studying', value: 'CS & Engineering + Cognitive Science' },
-      { label: 'School', value: 'UC Merced' },
-      { label: 'Class of', value: '2027' },
+      { label: 'School', value: 'University of California, Merced' },
       { label: 'Based in', value: 'SF Bay Area, CA' },
-      { label: 'Focus', value: 'AI / ML · Full-stack' },
+      { label: 'Focus', value: 'Full-stack · Backend · AI · Algorithms' },
     ],
     // "Currently" quick list
     now: [
-      'Building an AI maintenance app @ BART',
       'Researching VLM-guided robotic harvesting @ YuCCA Lab',
       'Contributing to Excalidraw open source',
     ],
   },
 
-  // ---- Skills: grouped, each with an icon --------------------------------
+  // ---- Skills: grouped. Logos are looked up by name in TechIcon.jsx --------
   skillGroups: [
     {
       category: 'Languages',
       items: [
-        { name: 'Python', icon: '🐍' },
-        { name: 'Java', icon: '☕' },
-        { name: 'C++', icon: '⚙️' },
-        { name: 'JavaScript', icon: '🟨' },
-        { name: 'TypeScript', icon: '🔷' },
-        { name: 'SQL', icon: '🗄️' },
-        { name: 'HTML / CSS', icon: '🎨' },
-        { name: 'Bash', icon: '💻' },
+        { name: 'Python' },
+        { name: 'Java' },
+        { name: 'C++' },
+        { name: 'JavaScript' },
+        { name: 'TypeScript' },
+        { name: 'SQL' },
+        { name: 'HTML / CSS' },
+        { name: 'Bash' },
       ],
     },
     {
       category: 'AI / ML',
       items: [
-        { name: 'PyTorch', icon: '🔥' },
-        { name: 'scikit-learn', icon: '📊' },
-        { name: 'LangGraph', icon: '🕸️' },
-        { name: 'LangChain', icon: '🔗' },
-        { name: 'Hugging Face', icon: '🤗' },
-        { name: 'YOLO', icon: '🎯' },
-        { name: 'SAM2 / SAM3', icon: '✂️' },
-        { name: 'FAISS', icon: '🧭' },
+        { name: 'PyTorch' },
+        { name: 'scikit-learn' },
+        { name: 'LangGraph' },
+        { name: 'LangChain' },
+        { name: 'Hugging Face' },
+        { name: 'YOLO' },
+        { name: 'SAM2 / SAM3' },
+        { name: 'FAISS' },
       ],
     },
     {
       category: 'Frameworks & Tools',
       items: [
-        { name: 'FastAPI', icon: '⚡' },
-        { name: 'React', icon: '⚛️' },
-        { name: 'React Native', icon: '📱' },
-        { name: 'Flask', icon: '🧪' },
-        { name: 'Node.js', icon: '🟩' },
-        { name: 'Docker', icon: '🐳' },
-        { name: 'AWS', icon: '☁️' },
-        { name: 'PostgreSQL', icon: '🐘' },
-        { name: 'Git', icon: '🌿' },
-        { name: 'CI/CD', icon: '🔁' },
-        { name: 'Linux', icon: '🐧' },
+        { name: 'FastAPI' },
+        { name: 'React' },
+        { name: 'React Native' },
+        { name: 'Flask' },
+        { name: 'Node.js' },
+        { name: 'Docker' },
+        { name: 'AWS' },
+        { name: 'PostgreSQL' },
+        { name: 'Git' },
+        { name: 'CI/CD' },
+        { name: 'Linux' },
+      ],
+    },
+    {
+      category: 'Models & Platforms',
+      items: [
+        { name: 'Claude' },
+        { name: 'OpenAI GPT' },
+        { name: 'Gemini' },
+        { name: 'CUDA' },
+        { name: 'Next.js' },
+        { name: 'Vercel' },
+        { name: 'Expo' },
+        { name: 'GCP' },
+        { name: 'Pandas' },
+        { name: 'NumPy' },
+        { name: 'Figma' },
+        { name: 'Raspberry Pi' },
       ],
     },
   ],
@@ -107,24 +109,25 @@ const siteData = {
   experience: [
     {
       company: 'The Bank of New York (BNY)',
+      short: 'BNY', logo: '/logos/bny-tile.png', logoBg: '#00243e',
       role: 'Software Engineering Intern',
-      date: 'Jun 2026 - Present',
-      current: true,
+      date: 'Jun 2026 - Aug 2026',
       description:
-        'Building an AI agent to automate internal engineering workflows, designing the tool-calling and orchestration layer that lets the agent take reliable, multi-step actions.',
+        'Built an AI agent to automate internal engineering workflows, designing the tool-calling and orchestration layer that let the agent take reliable, multi-step actions.',
       tech: ['Python', 'LLMs', 'AI Agents', 'Automation'],
     },
     {
       company: 'Bay Area Rapid Transit (BART)',
+      short: 'BART', logo: '/logos/bart.svg',
       role: 'AI Software Engineer - Capstone',
-      date: 'Jan 2026 - Present',
-      current: true,
+      date: 'Jan 2026 - May 2026',
       description:
-        'Building a React Native + Expo app for BART riders to report maintenance issues, with image upload, GPS station detection, and client-side compression. FastAPI + SQLAlchemy backend routes tickets across 10 departments and 40+ incident types; a fine-tuned YOLOv8 model powers routing. Deployed via Docker on AWS with GitHub Actions CI/CD.',
+        'Built a React Native + Expo app for BART riders to report maintenance issues, with image upload, GPS station detection, and client-side compression. A FastAPI + SQLAlchemy backend routed tickets across 10 departments and 40+ incident types, with a fine-tuned YOLOv8 model powering routing. Deployed via Docker on AWS with GitHub Actions CI/CD.',
       tech: ['React Native', 'FastAPI', 'YOLOv8', 'AWS', 'Docker'],
     },
     {
       company: 'YuCCA Lab, UC Merced',
+      short: 'YuCCA Lab', logo: '/logos/ucmerced.png',
       role: 'AI Research Engineering Intern',
       date: 'Jan 2026 - Present',
       current: true,
@@ -133,16 +136,8 @@ const siteData = {
       tech: ['Python', 'VLMs', 'SAM3', 'CUDA', 'GPU'],
     },
     {
-      company: 'Inclusive Interaction Lab',
-      role: 'Undergraduate LLM Researcher',
-      date: 'Dec 2025 - Present',
-      current: true,
-      description:
-        'Designing LLM-powered systems for child-computer interaction and adaptive learning, applying prompt engineering and user research to improve engagement and response quality.',
-      tech: ['LLMs', 'HCI', 'Prompt Engineering', 'User Research'],
-    },
-    {
       company: 'Outamation (via Extern)',
+      short: 'Outamation', logo: '/logos/outamation-tile.png',
       role: 'AI/ML Extern',
       date: 'Dec 2025 - Feb 2026',
       description:
@@ -151,6 +146,7 @@ const siteData = {
     },
     {
       company: 'CodeDay - Excalidraw',
+      short: 'Excalidraw', logoIcon: 'excalidraw',
       role: 'Open-Source Software Engineer Intern',
       date: 'Nov 2025 - Present',
       current: true,
@@ -160,6 +156,7 @@ const siteData = {
     },
     {
       company: 'Data Science Society at UC Merced',
+      short: 'Data Science Society', logo: '/logos/dss.png', logoFill: true,
       role: 'Lead Technical Director',
       date: 'Nov 2025 - Present',
       current: true,
@@ -169,6 +166,7 @@ const siteData = {
     },
     {
       company: 'Google Developer Student Clubs',
+      short: 'Google Developer Student Clubs', logo: '/logos/gdsc-tile.png',
       role: 'Technical Lead',
       date: 'Sep 2025 - Present',
       current: true,
@@ -178,6 +176,7 @@ const siteData = {
     },
     {
       company: 'Associated Students of UC Merced',
+      short: 'ASUCM', logo: '/logos/asucm-tile.png',
       role: 'Senator, At-Large',
       date: 'May 2025 - Present',
       current: true,
@@ -187,6 +186,7 @@ const siteData = {
     },
     {
       company: 'National Science Foundation',
+      short: 'National Science Foundation', logo: '/logos/nsf.svg',
       role: 'Algorithm Design Theory Researcher',
       date: 'May 2025 - Jul 2025',
       description:
@@ -195,6 +195,7 @@ const siteData = {
     },
     {
       company: '180 Degrees Consulting - UC Merced',
+      short: '180 Degrees Consulting', logo: '/logos/180dc.png',
       role: 'Founder & President',
       date: 'Oct 2024 - Present',
       current: true,
@@ -204,6 +205,7 @@ const siteData = {
     },
     {
       company: 'University of California, Merced',
+      short: 'UC Merced', logo: '/logos/ucmerced.png',
       role: 'Software Engineering Intern',
       date: 'Aug 2024 - May 2025',
       description:
@@ -212,6 +214,7 @@ const siteData = {
     },
     {
       company: 'University of California, Merced',
+      short: 'UC Merced', logo: '/logos/ucmerced.png',
       role: 'Calculus Learning Assistant',
       date: 'Aug 2024 - Present',
       current: true,
@@ -219,31 +222,15 @@ const siteData = {
         'Co-teaching Calculus I-II for 250+ students, leading office hours and review sessions to strengthen problem-solving and conceptual understanding.',
       tech: ['Teaching', 'Tutoring', 'Mentorship'],
     },
-    {
-      company: 'Brain Chain',
-      role: 'Software Engineering Intern',
-      date: 'May 2023 - Aug 2023',
-      description:
-        'Developed a 95%-accurate PDF text-extraction tool with a Tkinter GUI, streamlining analyst workflows and shipping it as an executable for 5,000+ page documents.',
-      tech: ['Python', 'Tkinter', 'PDF Processing'],
-    },
-    {
-      company: 'Siyanee Analytics Solutions LLP',
-      role: 'Product Design Intern',
-      date: 'May 2022 - Oct 2022',
-      description:
-        'Led a four-person design team for the Hindi Praveshikaa app, designing 40+ Figma screens and building adaptive-learning algorithms in C++/Python.',
-      tech: ['Figma', 'UX Design', 'C++', 'Python'],
-    },
   ],
 
   // ---- Projects (shown in the coverflow carousel) -------------------------
   // Update `link` to point anywhere you like ('#' = no external link).
+  // Add `image: '/projects/shot.png'` to replace a project's monogram panel with a screenshot.
   projects: [
     {
       tag: 'AI · Web',
       title: 'Palette',
-      image: '/projects/palette.svg',
       short: 'AI reads your coloring, then shops it.',
       description:
         'Snap a selfie and a vision model reads your skin undertone, hair, and eyes to build a personal color palette, then matches you to real makeup, clothing, and skincare you can buy. Qwen2.5-VL-72B handles the analysis, Pinecone vector search over all-MiniLM-L6-v2 embeddings finds matches, and Google Shopping data (via SerpApi) surfaces shoppable products, all on Next.js serverless.',
@@ -253,7 +240,6 @@ const siteData = {
     {
       tag: 'AI · Mobile',
       title: 'MirrorVerse',
-      image: '/projects/mirrorverse.svg',
       short: 'A flight-simulator for life decisions.',
       description:
         'Structure any life choice as a knowledge graph and let 7 adversarial AI agents debate it across rounds, returning the risks, contradictions, and missing information, personalized by memory of how you actually decide. A LangGraph debate engine over Claude powers the agents, with a FastAPI backend, React Native / Expo app, and a Neo4j Aura + Mem0 + Zep memory layer deployed on GCP Cloud Run.',
@@ -263,7 +249,6 @@ const siteData = {
     {
       tag: 'Open Source',
       title: 'Excalidraw',
-      image: '/projects/excalidraw.svg',
       short: 'Contributing to a tool with 100k+ stars.',
       description:
         'Contributor to Excalidraw (100k+ GitHub stars, 350k+ monthly users). Authored 3 production PRs debugging event handling and shared-state issues in the laser pointer and arrow tools, working with maintainers through reviews while keeping CI green.',
@@ -273,7 +258,6 @@ const siteData = {
     {
       tag: 'Mobile · AI',
       title: 'BART Rider Maintenance App',
-      image: '/projects/bart.svg',
       short: 'Report transit issues with AI routing.',
       description:
         'A React Native + Expo app letting riders report maintenance issues with photos, GPS station detection, and client-side compression. A fine-tuned YOLOv8 model routes tickets across 10 departments and 40+ incident types via a FastAPI backend on AWS.',
@@ -283,7 +267,6 @@ const siteData = {
     {
       tag: 'AI · NLP',
       title: 'Document Intelligence RAG',
-      image: '/projects/rag.svg',
       short: 'Ask questions across 100+ page PDFs.',
       description:
         'A retrieval-augmented pipeline that turns unstructured financial PDFs into searchable data. OCR + NLP + fine-tuned sentence-transformer embeddings with FAISS hybrid search power a chatbot that answers natural-language questions about hundred-page documents.',
@@ -293,7 +276,6 @@ const siteData = {
     {
       tag: 'Research · CV',
       title: 'Orchard 3D Perception',
-      image: '/projects/orchard.svg',
       short: 'VLM-guided robotic apple harvesting.',
       description:
         'A two-stage 3D perception pipeline (SAM3 → SAM3DObjects) extracting center-point coordinates from Gaussian-splat outputs on remote GPU. Co-authored a CVPR 2026 workshop paper spanning 4,027 RGB-D images and 16,257 annotated apple instances.',
@@ -303,7 +285,6 @@ const siteData = {
     {
       tag: 'ML · Sustainability',
       title: 'Smart Irrigation RL',
-      image: '/projects/irrigation.svg',
       short: 'Cut orchard freshwater use by 20%.',
       description:
         'A reinforcement-learning model for almond-orchard irrigation, reducing freshwater consumption by 20%. Paired with an automated CIMIS + IoT data pipeline (80% less preprocessing) and a Flask dashboard for live sensor visualization.',
@@ -326,8 +307,102 @@ const siteData = {
   //    'note'    = closing italic aside
   blogs: [
     {
+      slug: 'cvpr-agricultural-robotics',
+      kicker: 'Research · Computer Vision',
+      date: 'Fall 2026',
+      title: 'From CVPR to Vision-Language Models in the Orchard',
+      lead: 'What a year of agricultural robotics research taught me about the gap between seeing and doing.',
+      dek: 'Our harvesting research reached a CVPR workshop, then grew into a benchmark asking whether pretrained VLMs can plan for multi-arm fruit-picking robots.',
+      cover: '/images/blogs/cvpr-cover.png',
+      thumbFit: 'contain', // a diagram, so show all of it on its own white background
+      coverAlt: 'Diagram comparing a traditional 3D perception and multi-arm planner pipeline with a zero-shot VLM pipeline for apple harvesting',
+      tags: ['Computer Vision', 'Vision-Language Models', 'Robotics', '3D Perception'],
+      links: [{ label: 'Read the paper on arXiv', href: 'https://arxiv.org/abs/2609.13606v1' }],
+      body: [
+        {
+          type: 'p',
+          text: 'Over the past year, I have had the opportunity to work on research at the intersection of artificial intelligence, computer vision, and agriculture. What started as an opportunity to explore how modern vision models could be applied to agricultural environments eventually led to research presented through a CVPR workshop and continued into new work involving Vision-Language Models and 3D perception.',
+        },
+        {
+          type: 'p',
+          text: 'One of the highlights of this experience was having our agricultural robotics research accepted to a workshop at the IEEE/CVF Conference on Computer Vision and Pattern Recognition (CVPR). The conference took place in Denver, Colorado, and it was exciting to see our work become part of a much larger community focused on advancing computer vision.',
+        },
+        {
+          type: 'image',
+          src: '/images/blogs/cvpr-poster.png',
+          alt: 'Research poster titled Advancing Multi-Arm Robotic Apple Harvesting Through 3D Perception and Intelligent Planning, showing motivations, a perception and planning pipeline, and preliminary SAM3 and Grounding DINO results',
+          caption: 'Our poster: Advancing Multi-Arm Robotic Apple Harvesting Through 3D Perception and Intelligent Planning (UC Merced and UC Davis).',
+        },
+
+        { type: 'h2', text: 'From Computer Vision to Vision-Language Models' },
+        {
+          type: 'p',
+          text: 'Since then, my research has continued to evolve. Most recently, I contributed to a paper exploring whether pretrained Vision-Language Models, or VLMs, can be used for multi-arm robotic fruit harvesting.',
+        },
+        {
+          type: 'p',
+          text: 'The work looks at a challenging problem in agricultural robotics. A robotic harvesting system not only needs to recognize fruit, but also determine where that fruit is located in 3D space, decide which robotic arm should pick it, and generate a harvesting path without causing collisions between multiple arms.',
+        },
+        {
+          type: 'p',
+          text: 'Our research introduces a benchmark for evaluating pretrained VLMs on **zero-shot multi-arm fruit harvesting planning** using real-world apple and citrus orchard images. Instead of requiring a model to be specifically retrained for every orchard environment, we explored whether general-purpose VLMs could reason directly from an orchard image and generate harvesting sequences and 3D waypoints for multiple robotic arms.',
+        },
+        {
+          type: 'p',
+          text: 'One part of the project that I found especially interesting was comparing this approach against a more traditional computer vision and robotics pipeline. The traditional pipeline uses separate stages for fruit detection and segmentation, 3D localization, task allocation, and trajectory optimization. The VLM approach instead attempts to reason about the scene and directly produce a structured harvesting plan.',
+        },
+        {
+          type: 'p',
+          text: 'We evaluated several open-source and closed-source VLMs and looked beyond whether a model could simply recognize fruit. We also measured how accurately the models could generate harvesting waypoints, how efficiently they planned trajectories, and whether their multi-arm assignments could result in collisions.',
+        },
+        {
+          type: 'p',
+          text: 'The results showed something that I found particularly interesting. Modern VLMs are already capable of generating useful multi-arm harvesting plans without task-specific training, but understanding an image at a high level is very different from producing the precise 3D coordinates required for a physical robot. Accurate waypoint generation and safe coordination between robotic arms remain major challenges.',
+        },
+
+        { type: 'h2', text: 'Experimenting with 3D Vision' },
+        {
+          type: 'p',
+          text: "Outside of the main paper, I also had the opportunity to experiment with Meta's SAM 3D model on some of the agricultural imagery we were working with.",
+        },
+        {
+          type: 'p',
+          text: 'This was especially interesting because much of our research revolves around the difference between understanding **what** exists in an image and understanding **where it exists in physical space**. Testing newer 3D vision approaches gave me another perspective on how foundation models could eventually help robots reason about real-world agricultural environments.',
+        },
+        {
+          type: 'p',
+          text: 'It was also a chance for me to explore research outside of my assigned experiments. One of my favorite parts of research has been being able to take a new model or idea, test it on the problems we are already working on, and see where it succeeds and where it still struggles.',
+        },
+
+        { type: 'h2', text: 'What I Took Away From the Experience' },
+        {
+          type: 'p',
+          text: 'Before working on these projects, I mostly thought of computer vision in terms of tasks such as classification, detection, and segmentation. Agricultural robotics showed me how much more complicated the problem becomes once the output of a model has to translate into an action in the physical world.',
+        },
+        {
+          type: 'p',
+          text: 'A model recognizing an apple is useful. A robot, however, needs to know where that apple is, which arm should reach it, how that arm should move, and whether that movement will interfere with another robot.',
+        },
+        {
+          type: 'p',
+          text: 'That difference between **vision and action** has become one of the most interesting parts of this research for me.',
+        },
+        {
+          type: 'p',
+          text: 'Having the opportunity to contribute to research connected to CVPR, experiment with emerging models such as SAM 3D, and continue into work involving VLM-based robotic planning has given me a much deeper understanding of how quickly AI and computer vision are evolving.',
+        },
+        {
+          type: 'p',
+          text: 'It has also made me increasingly interested in work that goes beyond evaluating models in isolation and instead asks a bigger question: **How can we turn the capabilities of foundation models into systems that can reliably interact with the real world?**',
+        },
+        {
+          type: 'p',
+          text: "I'm excited to continue exploring that question through AI, computer vision, and robotics research.",
+        },
+      ],
+    },
+    {
       slug: 'entering-industry-expo',
-      icon: '🎤',
       kicker: 'Leadership · Student Government',
       date: 'February 2026',
       title: "Building UC Merced's First Entering Industry Expo",
@@ -516,14 +591,13 @@ const siteData = {
     },
     {
       slug: 'bart-capstone-ticket-routing',
-      icon: '🚇',
       kicker: 'Capstone · Applied AI',
       date: 'Spring 2026',
       title: 'Teaching a Maintenance App to Route Its Own Tickets',
       lead: 'A React Native app, a FastAPI backend, and a YOLOv8 model that learns which department to send a broken escalator to. Winner of our capstone category.',
       dek: 'My team built the app riders use to report a problem, and trained the model that decides which of ten BART departments owns it.',
-      cover: null,   // no photos from this one, so the card falls back to the icon tile
-      coverAlt: '',
+      cover: '/images/blogs/bart-cover.jpg',
+      coverAlt: 'Our capstone team standing in front of the BART incident identification poster at the showcase',
       tags: ['React Native', 'FastAPI', 'YOLOv8', 'RLHF', 'AWS', 'Docker'],
       stats: [
         { value: '1st', label: 'Place in category' },
@@ -790,48 +864,6 @@ const siteData = {
       ],
     },
   ],
-  // ---- Accomplishments (first = featured hero trophy) ---------------------
-  accomplishments: [
-    {
-      icon: '📄',
-      title: 'CVPR 2026 Workshop Paper',
-      description:
-        'Co-authored a workshop paper on VLM-guided multi-arm robotic harvesting across 4,027 RGB-D images and 16,257 annotated apple instances.',
-    },
-    {
-      icon: '🏆',
-      title: '1st Place - BART Capstone',
-      description:
-        'Won first place in our capstone category with a maintenance reporting system for BART, a React Native app with a fine-tuned YOLOv8 model routing reports across 10 departments.',
-    },
-    {
-      icon: '🎤',
-      title: "Hosted UC Merced's First Entering Industry Expo",
-      description:
-        'Planned and emceed the campus’s first Entering Industry Networking Expo, with 11 companies including Tesla, 13 organizations, and 350+ students.',
-    },
-    {
-      icon: '🚀',
-      title: 'Founder & President',
-      description: "Founded UC Merced's first consulting club, 180 Degrees Consulting, growing to 50+ members from 100+ applicants.",
-    },
-    {
-      icon: '🏛️',
-      title: 'Elected to Student Government',
-      description: 'Director of Academic Affairs & Senator at Large representing 10,000+ students, overseeing a 7-figure budget.',
-    },
-    {
-      icon: '🔬',
-      title: 'NSF Researcher',
-      description: 'Authored an algorithms paper on Greedy Range Tree variants, submitted for conference review.',
-    },
-    {
-      icon: '⭐',
-      title: 'Excalidraw Contributor',
-      description: 'Shipped production PRs to a project with 100k+ GitHub stars and 350k+ monthly users.',
-    },
-  ],
-
   // ---- Contact ------------------------------------------------------------
   contact: {
     message:

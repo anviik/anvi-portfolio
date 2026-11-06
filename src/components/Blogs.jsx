@@ -1,8 +1,9 @@
 import { useState, useEffect, useRef } from 'react'
 import { createPortal } from 'react-dom'
 import SectionHeader from './SectionHeader'
+import { Reveal } from '../lib/motion'
 
-const ACCENTS = ['#c48b9f', '#6bb5c9', '#8e6b9e']
+const ACCENTS = ['var(--magenta)', 'var(--blue)', 'var(--violet)']
 
 /** Rough read time from the post body, good enough, and it never goes stale. */
 function countWords(blocks) {
@@ -18,6 +19,11 @@ function countWords(blocks) {
 
 function readTime(post) {
   return Math.max(1, Math.round(countWords(post.body) / 220))
+}
+
+/** Renders **bold** spans inside plain post text. */
+function Rich({ text }) {
+  return text.split(/\*\*(.+?)\*\*/g).map((part, i) => (i % 2 ? <strong key={i}>{part}</strong> : part))
 }
 
 function Block({ block }) {
@@ -100,7 +106,7 @@ function Block({ block }) {
     }
 
     case 'quote':
-      return <blockquote className="article-quote">{block.text}</blockquote>
+      return <blockquote className="article-quote"><Rich text={block.text} /></blockquote>
 
     case 'table':
       return (
@@ -121,7 +127,7 @@ function Block({ block }) {
     case 'list':
       return (
         <ul className="article-list">
-          {block.items.map((item, i) => <li key={i}>{item}</li>)}
+          {block.items.map((item, i) => <li key={i}><Rich text={item} /></li>)}
         </ul>
       )
 
@@ -138,10 +144,10 @@ function Block({ block }) {
       )
 
     case 'note':
-      return <p className="article-note">{block.text}</p>
+      return <p className="article-note"><Rich text={block.text} /></p>
 
     default:
-      return <p className="article-para">{block.text}</p>
+      return <p className="article-para"><Rich text={block.text} /></p>
   }
 }
 
@@ -199,6 +205,16 @@ function ArticleView({ post, accent, onBackToList, onReadNext, next }) {
         <div className="article-tags">
           {post.tags.map((t) => <span key={t} className="post-tag">{t}</span>)}
         </div>
+
+        {post.links?.length > 0 && (
+          <div className="article-links">
+            {post.links.map((l) => (
+              <a key={l.href} className="pj-cta" href={l.href} target="_blank" rel="noreferrer">
+                <span>{l.label}</span><span className="pj-cta-arrow" aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+        )}
       </header>
 
       {post.cover && (
@@ -241,83 +257,64 @@ function ArticleView({ post, accent, onBackToList, onReadNext, next }) {
   )
 }
 
-export default function Blogs({ data, onBack }) {
-  const posts = data.blogs
-  const [openIndex, setOpenIndex] = useState(null)
-
-  // Jump back to the top whenever we swap between list and article.
-  useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'auto' })
-  }, [openIndex])
-
-  const open = openIndex !== null ? posts[openIndex] : null
-
+/** A single post, shown in place of the home page. */
+export function BlogArticle({ posts, index, onOpen, onClose }) {
   return (
-    <section className="section" id="blogs">
-      <div className="section-inner">
-        {/* While reading, the article supplies its own title and "All posts"
-            control, so a second section header just pushes the story down. */}
-        {open ? (
-          <ArticleView
-            post={open}
-            accent={ACCENTS[openIndex % ACCENTS.length]}
-            next={posts[openIndex + 1] || null}
-            onReadNext={() => setOpenIndex(openIndex + 1)}
-            onBackToList={() => setOpenIndex(null)}
-          />
-        ) : (
-          <>
-            <SectionHeader number="05" title="Blog" onBack={onBack} />
+    <section className="section container">
+      <ArticleView
+        key={posts[index].slug}
+        post={posts[index]}
+        accent={ACCENTS[index % ACCENTS.length]}
+        next={posts[index + 1] || null}
+        onReadNext={() => onOpen(index + 1)}
+        onBackToList={onClose}
+      />
+    </section>
+  )
+}
 
-            <p className="writing-intro">
-              Long-form write-ups of the things I’ve built and run: what actually happened, and what
-              each one taught me.
-            </p>
+export default function Blogs({ data, onOpenPost }) {
+  return (
+    <section className="section container" id="blogs">
+      <SectionHeader
+        number="05"
+        title="Blog"
+        tone="violet"
+        blurb="Long-form write-ups of the things I’ve built and run: what actually happened, and what each one taught me."
+      />
 
-            <div className="blog-list">
-              {posts.map((p, i) => (
-                <button
-                  key={p.slug}
-                  className="blog-card card"
-                  onClick={() => setOpenIndex(i)}
-                  style={{ '--accent': ACCENTS[i % ACCENTS.length], animationDelay: `${0.1 + i * 0.12}s` }}
-                >
-                  <span className="blog-card-thumb">
-                    {p.cover ? (
-                      <img src={p.cover} alt="" loading="lazy" />
-                    ) : (
-                      <span className="blog-card-thumb-icon">{p.icon}</span>
-                    )}
-                  </span>
+      <div className="blog-list">
+        {data.blogs.map((p, i) => (
+          <Reveal key={p.slug} className="blog-item">
+            <button
+              className="blog-row"
+              onClick={() => onOpenPost(i)}
+              data-cursor="Read"
+              style={{ '--accent': ACCENTS[i % ACCENTS.length] }}
+            >
+              <span className="blog-thumb">
+                {/* `thumb` overrides the cover in the list only; `thumbPos` picks the crop, `thumbFit: 'contain'` skips it. */}
+                {p.thumb || p.cover
+                  ? <img src={p.thumb || p.cover} alt="" loading="lazy" className={p.thumbFit === 'contain' ? 'contain' : undefined} style={p.thumbPos ? { objectPosition: p.thumbPos } : undefined} />
+                  : <span className="blog-thumb-mono" aria-hidden="true">{p.title.charAt(0)}</span>}
+              </span>
 
-                  <span className="blog-card-text">
-                    <span className="post-meta">
-                      <span className="post-kicker">{p.kicker}</span>
-                      <span className="post-dot">·</span>
-                      <span className="post-date">{p.date}</span>
-                      <span className="post-dot">·</span>
-                      <span className="post-date">{readTime(p)} min read</span>
-                    </span>
+              <span className="blog-text">
+                <span className="post-meta">
+                  <span className="post-kicker">{p.kicker}</span>
+                  <span className="post-dot">/</span>
+                  <span className="post-date">{p.date}</span>
+                  <span className="post-dot">/</span>
+                  <span className="post-date">{readTime(p)} min read</span>
+                </span>
+                <span className="blog-title">{p.title}</span>
+                <span className="blog-dek">{p.dek}</span>
+              </span>
 
-                    <h3 className="blog-card-title">{p.title}</h3>
-                    <p className="blog-card-dek">{p.dek}</p>
-
-                    <span className="blog-card-foot">
-                      <span className="post-tags">
-                        {p.tags.slice(0, 3).map((t) => (
-                          <span key={t} className="post-tag">{t}</span>
-                        ))}
-                      </span>
-                      <span className="blog-card-cta">
-                        Read article <span className="blog-card-arrow" aria-hidden="true">→</span>
-                      </span>
-                    </span>
-                  </span>
-                </button>
-              ))}
-            </div>
-          </>
-        )}
+              <span className="blog-arrow" aria-hidden="true">Read post <span>→</span></span>
+            </button>
+          </Reveal>
+        ))}
       </div>
     </section>
   )
